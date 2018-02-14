@@ -126,7 +126,7 @@ namespace Heimdall
 			bool detachedDriver;
 
 #endif
-
+			bool isOldPhone;
 			unsigned int fileTransferSequenceMaxLength;
 			unsigned int fileTransferPacketSize;
 			unsigned int fileTransferSequenceTimeout;
@@ -170,6 +170,8 @@ namespace Heimdall
 			void SetUsbLogLevel(UsbLogLevel usbLogLevel);
 
 			void SetUsbPath(const char * usbpath);
+
+			void SetOldProto(bool setme);
 
 			UsbLogLevel GetUsbLogLevel(void) const
 			{

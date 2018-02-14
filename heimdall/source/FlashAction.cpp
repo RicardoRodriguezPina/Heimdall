@@ -432,6 +432,7 @@ int FlashAction::Execute(int argc, char **argv)
 	argumentTypes["stdout-errors"] = kArgumentTypeFlag;
 	argumentTypes["usb-log-level"] = kArgumentTypeString;
 	argumentTypes["tflash"] = kArgumentTypeFlag;
+  argumentTypes["oldfam"] = kArgumentTypeFlag;
 
 	argumentTypes["pit"] = kArgumentTypeString;
 	shortArgumentAliases["pit"] = "pit";
@@ -461,6 +462,7 @@ int FlashAction::Execute(int argc, char **argv)
 	bool resume = arguments.GetArgument("resume") != nullptr;
 	bool verbose = arguments.GetArgument("verbose") != nullptr;
 	bool tflash = arguments.GetArgument("tflash") != nullptr;
+  bool oldfam = arguments.GetArgument("oldfam") != nullptr;
 
 	if (arguments.GetArgument("stdout-errors") != nullptr)
 		Interface::SetStdoutErrors(true);
@@ -537,6 +539,7 @@ int FlashAction::Execute(int argc, char **argv)
 	// Perform flash
 
 	BridgeManager *bridgeManager = new BridgeManager(verbose);
+  bridgeManager->SetOldProto(oldfam);
 	bridgeManager->SetUsbLogLevel(usbLogLevel);
   if(usbPath){
     bridgeManager->SetUsbPath(usbPath->GetValue().c_str());

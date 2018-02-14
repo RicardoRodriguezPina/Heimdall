@@ -35,7 +35,7 @@ namespace Heimdall
 				kBeginSession = 0, //0x64, //Ricardo Rodriguez: Origanal Value is 0???  S6 needs 0 :S
 				kDeviceType = 1, // ?
 				kTotalBytes = 2,
-				//kEnableSomeSortOfFlag = 3,
+				kBeginSessionNew = 0x64,
 				kFilePartSize = 5,
 				kEnableTFlash = 8
 			};

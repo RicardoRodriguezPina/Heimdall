@@ -377,6 +377,7 @@ BridgeManager::BridgeManager(bool verbose)
 	outEndpoint = -1;
 	interfaceIndex = -1;
 	altSettingIndex = -1;
+	isOldPhone = false;
 
 	interfaceClaimed = false;
 
@@ -548,12 +549,22 @@ bool BridgeManager::BeginSession(void)
 {
 	Interface::Print("Beginning session...\n");
 
-	BeginSessionPacket beginSessionPacket;
+	if(isOldPhone){
+		BeginSessionPacket beginSessionPacket;
 
-	if (!SendPacket(&beginSessionPacket))
-	{
-		Interface::PrintError("Failed to begin session!\n");
-		return (false);
+		if (!SendPacket(&beginSessionPacket))
+		{
+			Interface::PrintError("Failed to begin session!\n");
+			return (false);
+		}
+	}else{
+		BeginSessionPacketNew beginSessionPacketNew;
+
+		if (!SendPacket(&beginSessionPacketNew))
+		{
+			Interface::PrintError("Failed to begin session!\n");
+			return (false);
+		}
 	}
 
 	SessionSetupResponse beginSessionResponse;
@@ -570,31 +581,31 @@ bool BridgeManager::BeginSession(void)
 	Interface::Print("\nSome devices may take up to 2 minutes to respond.\nPlease be patient!\n\n");
 	Sleep(3000); // Give the user time to read the message.
 
-	// if (deviceDefaultPacketSize != 0) // 0 means changing the packet size is not supported.
-	// {
-	// 	fileTransferSequenceTimeout = 120000; // 2 minutes!
-	// 	fileTransferPacketSize = 1048576; // 1 MiB
-	// 	fileTransferSequenceMaxLength = 30; // Therefore, fileTransferPacketSize * fileTransferSequenceMaxLength == 30 MiB per sequence.
-  //
-	// 	FilePartSizePacket filePartSizePacket(fileTransferPacketSize);
-  //
-	// 	if (!SendPacket(&filePartSizePacket))
-	// 	{
-	// 		Interface::PrintError("Failed to send file part size packet!\n");
-	// 		return (false);
-	// 	}
-  //
-	// 	SessionSetupResponse filePartSizeResponse;
-  //
-	// 	if (!ReceivePacket(&filePartSizeResponse))
-	// 		return (false);
-  //
-	// 	if (filePartSizeResponse.GetResult() != 0)
-	// 	{
-	// 		Interface::PrintError("Unexpected file part size response!\nExpected: 0\nReceived: %d\n", filePartSizeResponse.GetResult());
-	// 		return (false);
-	// 	}
-	// }
+	if (deviceDefaultPacketSize != 0) // 0 means changing the packet size is not supported.
+	{
+		fileTransferSequenceTimeout = 120000; // 2 minutes!
+		fileTransferPacketSize = 1048576; // 1 MiB
+		fileTransferSequenceMaxLength = 30; // Therefore, fileTransferPacketSize * fileTransferSequenceMaxLength == 30 MiB per sequence.
+
+		FilePartSizePacket filePartSizePacket(fileTransferPacketSize);
+
+		if (!SendPacket(&filePartSizePacket))
+		{
+			Interface::PrintError("Failed to send file part size packet!\n");
+			return (false);
+		}
+
+		SessionSetupResponse filePartSizeResponse;
+
+		if (!ReceivePacket(&filePartSizeResponse))
+			return (false);
+
+		if (filePartSizeResponse.GetResult() != 0)
+		{
+			Interface::PrintError("Unexpected file part size response!\nExpected: 0\nReceived: %d\n", filePartSizeResponse.GetResult());
+			return (false);
+		}
+	}
 
 	Interface::Print("Session begun.\n\n");
 	return (true);
@@ -906,7 +917,7 @@ bool BridgeManager::SendPitData(const PitData *pitData) const
 	if (!success)
 	{
 		Interface::PrintError("Failed to receive PIT file part response!\n");
-		return (false);
+		//return (false);
 	}
 
 	// End pit file transfer
@@ -1287,6 +1298,15 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 void BridgeManager::SetUsbPath(const char * usbpath)
 {
 	this->usbPath = usbpath;
+}
+/*
+*
+* Ricardo Rodriguez: BridgeManager needs to activate old value for protocol in old Galaxy fam
+*
+*/
+void BridgeManager::SetOldProto(bool setme)
+{
+	this->isOldPhone = setme;
 }
 
 void BridgeManager::SetUsbLogLevel(UsbLogLevel usbLogLevel)

@@ -52,6 +52,7 @@ int PrintPitAction::Execute(int argc, char **argv)
 	argumentTypes["no-reboot"] = kArgumentTypeFlag;
 	argumentTypes["resume"] = kArgumentTypeFlag;
 	argumentTypes["verbose"] = kArgumentTypeFlag;
+  argumentTypes["oldfam"] = kArgumentTypeFlag;
 	argumentTypes["stdout-errors"] = kArgumentTypeFlag;
 	argumentTypes["usb-log-level"] = kArgumentTypeString;
   argumentTypes["usb-path"] = kArgumentTypeString;
@@ -71,6 +72,7 @@ int PrintPitAction::Execute(int argc, char **argv)
 	bool reboot = arguments.GetArgument("no-reboot") == nullptr;
 	bool resume = arguments.GetArgument("resume") != nullptr;
 	bool verbose = arguments.GetArgument("verbose") != nullptr;
+  bool oldfam = arguments.GetArgument("oldfam") != nullptr;
 
 	if (arguments.GetArgument("stdout-errors") != nullptr)
 		Interface::SetStdoutErrors(true);
@@ -161,6 +163,7 @@ int PrintPitAction::Execute(int argc, char **argv)
 		// Print PIT from a device.
 
 		BridgeManager *bridgeManager = new BridgeManager(verbose);
+    bridgeManager->SetOldProto(oldfam);
 		bridgeManager->SetUsbLogLevel(usbLogLevel);
 
     if(usbPath){
