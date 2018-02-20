@@ -148,19 +148,22 @@ static void closeFiles(vector<PartitionFile>& partitionFiles, FILE *& pitFile)
 
 static bool sendTotalTransferSize(BridgeManager *bridgeManager, const vector<PartitionFile>& partitionFiles, FILE *pitFile, bool repartition)
 {
-	unsigned int totalBytes = 0;
+	unsigned long long totalBytes = 0; //Ricardo original unsigned int
 
 	for (vector<PartitionFile>::const_iterator it = partitionFiles.begin(); it != partitionFiles.end(); it++)
 	{
 		FileSeek(it->file, 0, SEEK_END);
-		totalBytes += (unsigned int)FileTell(it->file);
+		unsigned long long tmpSize = (unsigned long long)FileTell(it->file);
+		totalBytes += tmpSize; //(unsigned long long)FileTell(it->file); //Ricardo original unsigned int
+		Interface::Print("File %s\n", it->argumentName);
+		Interface::Print("File %llu\n", tmpSize);
 		FileRewind(it->file);
 	}
 
 	if (repartition)
 	{
 		FileSeek(pitFile, 0, SEEK_END);
-		totalBytes += (unsigned int)FileTell(pitFile);
+		totalBytes += (unsigned long long)FileTell(pitFile); //Ricardo original unsigned int
 		FileRewind(pitFile);
 	}
 

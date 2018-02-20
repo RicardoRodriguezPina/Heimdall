@@ -34,7 +34,7 @@ namespace Heimdall
 
 		public:
 
-			TotalBytesPacket(unsigned int totalBytes) : SessionSetupPacket(SessionSetupPacket::kTotalBytes)
+			TotalBytesPacket(unsigned long long totalBytes) : SessionSetupPacket(SessionSetupPacket::kTotalBytes)  //Ricardo original unsigned int
 			{
 				this->totalBytes = totalBytes;
 			}

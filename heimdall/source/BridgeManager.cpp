@@ -581,6 +581,7 @@ bool BridgeManager::BeginSession(void)
 	Interface::Print("\nSome devices may take up to 2 minutes to respond.\nPlease be patient!\n\n");
 	Sleep(3000); // Give the user time to read the message.
 
+	
 	if (deviceDefaultPacketSize != 0) // 0 means changing the packet size is not supported.
 	{
 		fileTransferSequenceTimeout = 120000; // 2 minutes!
@@ -778,6 +779,7 @@ bool BridgeManager::SendPacket(OutboundPacket *packet, int timeout, int emptyTra
 	return (true);
 }
 
+
 bool BridgeManager::ReceivePacket(InboundPacket *packet, int timeout, int emptyTransferFlags) const
 {
 	if (emptyTransferFlags & kEmptyTransferBefore)
@@ -805,8 +807,10 @@ bool BridgeManager::ReceivePacket(InboundPacket *packet, int timeout, int emptyT
 
 	bool unpacked = packet->Unpack();
 
-	if (!unpacked && verbose)
+	if (!unpacked && verbose){
 		Interface::PrintError("Failed to unpack received packet.\n");
+
+	}
 
 	if (emptyTransferFlags & kEmptyTransferAfter)
 	{
@@ -1057,6 +1061,7 @@ int BridgeManager::DownloadPitFile(unsigned char **pitBuffer) const
 
 bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int deviceType, unsigned int fileIdentifier) const
 {
+	Interface::Print("Start File sending");
 	if (destination != EndFileTransferPacket::kDestinationModem && destination != EndFileTransferPacket::kDestinationPhone)
 	{
 		Interface::PrintError("Attempted to send file to unknown destination!\n");
@@ -1080,8 +1085,9 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 	}
 
 	FileSeek(file, 0, SEEK_END);
-	unsigned int fileSize = (unsigned int)FileTell(file);
+	unsigned long long fileSize = (unsigned long long)FileTell(file); //Ricardo original unsigned int
 	FileRewind(file);
+	Interface::Print("Try to sent %llu bytes\n", fileSize);
 
 	ResponsePacket *fileTransferResponse = new ResponsePacket(ResponsePacket::kResponseTypeFileTransfer);
 	success = ReceivePacket(fileTransferResponse);
@@ -1093,31 +1099,34 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 		return (false);
 	}
 
-	unsigned int sequenceCount = fileSize / (fileTransferSequenceMaxLength * fileTransferPacketSize);
-	unsigned int lastSequenceSize = fileTransferSequenceMaxLength;
-	unsigned int partialPacketByteCount = fileSize % fileTransferPacketSize;
+	unsigned long long sequenceCount = fileSize / (fileTransferSequenceMaxLength * fileTransferPacketSize); //Ricardo original unsigned int
+	unsigned long long lastSequenceSize = fileTransferSequenceMaxLength; //Ricardo original unsigned int
+	unsigned long long partialPacketByteCount = fileSize % fileTransferPacketSize; //Ricardo original unsigned int
 
 	if (fileSize % (fileTransferSequenceMaxLength * fileTransferPacketSize) != 0)
 	{
 		sequenceCount++;
 
-		unsigned int lastSequenceBytes = fileSize % (fileTransferSequenceMaxLength * fileTransferPacketSize);
+		unsigned long long lastSequenceBytes = fileSize % (fileTransferSequenceMaxLength * fileTransferPacketSize); //Ricardo original unsigned int
 		lastSequenceSize = lastSequenceBytes / fileTransferPacketSize;
 
 		if (partialPacketByteCount != 0)
 			lastSequenceSize++;
 	}
-
-	unsigned int bytesTransferred = 0;
-	unsigned int currentPercent;
-	unsigned int previousPercent = 0;
+	Interface::Print("\nsequenceCount: %llu\n", sequenceCount);
+	unsigned long long bytesTransferred = 0; //Ricardo original unsigned int
+	unsigned long long  currentPercent; //Ricardo original unsigned int
+	unsigned long long previousPercent = 0; //Ricardo original unsigned int
 	Interface::Print("0%%");
 
 	for (unsigned int sequenceIndex = 0; sequenceIndex < sequenceCount; sequenceIndex++)
 	{
 		bool isLastSequence = (sequenceIndex == sequenceCount - 1);
-		unsigned int sequenceSize = (isLastSequence) ? lastSequenceSize : fileTransferSequenceMaxLength;
-		unsigned int sequenceTotalByteCount = sequenceSize * fileTransferPacketSize;
+		unsigned long long sequenceSize = (isLastSequence) ? lastSequenceSize : fileTransferSequenceMaxLength; //Ricardo original unsigned int
+		unsigned long long sequenceTotalByteCount = sequenceSize * fileTransferPacketSize; //Ricardo original unsigned int
+		Interface::Print("\nsequenceIndex: %llu\n", sequenceIndex);
+		
+				
 
 		FlashPartFileTransferPacket *beginFileTransferPacket = new FlashPartFileTransferPacket(sequenceTotalByteCount);
 		success = SendPacket(beginFileTransferPacket);
@@ -1141,11 +1150,10 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 			return (false);
 		}
 
-		for (unsigned int filePartIndex = 0; filePartIndex < sequenceSize; filePartIndex++)
+		for (unsigned long long filePartIndex = 0; filePartIndex < sequenceSize; filePartIndex++) //Ricardo original unsigned int
 		{
 			// NOTE: This empty transfer thing is entirely ridiculous, but sadly it seems to be required.
 			int sendEmptyTransferFlags = (filePartIndex == 0) ? kEmptyTransferNone : kEmptyTransferBefore;
-
 			// Send
 			SendFilePartPacket *sendFilePartPacket = new SendFilePartPacket(file, fileTransferPacketSize);
 			success = SendPacket(sendFilePartPacket, kDefaultTimeoutSend, sendEmptyTransferFlags);
@@ -1162,7 +1170,6 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 			SendFilePartResponse *sendFilePartResponse = new SendFilePartResponse();
 			success = ReceivePacket(sendFilePartResponse);
 			int receivedPartIndex = sendFilePartResponse->GetPartIndex();
-
 			delete sendFilePartResponse;
 
 			if (!success)
@@ -1190,7 +1197,7 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 					// Response
 					sendFilePartResponse = new SendFilePartResponse();
 					success = ReceivePacket(sendFilePartResponse);
-					unsigned int receivedPartIndex = sendFilePartResponse->GetPartIndex();
+					unsigned long long receivedPartIndex = sendFilePartResponse->GetPartIndex(); //Ricardo original unsigned int
 
 					delete sendFilePartResponse;
 
@@ -1221,7 +1228,7 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 			if (bytesTransferred > fileSize)
 				bytesTransferred = fileSize;
 
-			currentPercent = (unsigned int)(100.0 * ((double)bytesTransferred / (double)fileSize));
+			currentPercent = (unsigned long long)(100.0 * ((long double)bytesTransferred / (long double)fileSize));  //Ricardo original unsigned int, double,  double
 
 			if (currentPercent != previousPercent)
 			{
@@ -1241,8 +1248,8 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 			previousPercent = currentPercent;
 		}
 
-		unsigned int sequenceEffectiveByteCount = (isLastSequence && partialPacketByteCount != 0) ?
-			fileTransferPacketSize * (lastSequenceSize - 1) + partialPacketByteCount : sequenceTotalByteCount;
+		unsigned long long sequenceEffectiveByteCount = (isLastSequence && partialPacketByteCount != 0) ?
+			fileTransferPacketSize * (lastSequenceSize - 1) + partialPacketByteCount : sequenceTotalByteCount; //Ricardo original unsigned int
 
 		if (destination == EndFileTransferPacket::kDestinationPhone)
 		{
@@ -1275,6 +1282,7 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 
 		fileTransferResponse = new ResponsePacket(ResponsePacket::kResponseTypeFileTransfer);
 		success = ReceivePacket(fileTransferResponse, fileTransferSequenceTimeout);
+		
 		delete fileTransferResponse;
 
 		if (!success)
@@ -1283,7 +1291,9 @@ bool BridgeManager::SendFile(FILE *file, unsigned int destination, unsigned int 
 			Interface::PrintError("Failed to confirm end of file transfer sequence!\n");
 			return (false);
 		}
+		
 	}
+
 
 	if (!verbose)
 		Interface::Print("\n");

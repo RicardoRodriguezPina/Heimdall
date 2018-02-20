@@ -7,7 +7,7 @@ set(CMAKE_MODULE_PATH
 project(Heimdall)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
+set(USE_64_SUFFIX ON)
 option(DISABLE_FRONTEND "Disable GUI frontend" OFF)
 
 add_subdirectory(libpit)
