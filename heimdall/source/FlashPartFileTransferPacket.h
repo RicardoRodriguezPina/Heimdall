@@ -30,17 +30,17 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int sequenceByteCount;
+			unsigned long long sequenceByteCount;
 
 		public:
 
-			FlashPartFileTransferPacket(unsigned int sequenceByteCount)
+			FlashPartFileTransferPacket(unsigned long long sequenceByteCount)
 				: FileTransferPacket(FileTransferPacket::kRequestPart)
 			{
 				this->sequenceByteCount = sequenceByteCount;
 			}
 
-			unsigned int GetSequenceByteCount(void) const
+			unsigned long long GetSequenceByteCount(void) const
 			{
 				return (sequenceByteCount);
 			}

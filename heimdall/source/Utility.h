@@ -33,7 +33,7 @@ namespace Heimdall
 	namespace Utility
 	{
 		NumberParsingStatus ParseInt(int &intValue, const char *string, int base = 0);
-		NumberParsingStatus ParseUnsignedInt(unsigned int &uintValue, const char *string, int base = 0);
+		NumberParsingStatus ParseUnsignedInt(unsigned long long &uintValue, const char *string, int base = 0);
 	}
 }
 

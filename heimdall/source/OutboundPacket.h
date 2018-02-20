@@ -30,7 +30,7 @@ namespace Heimdall
 	{
 		protected:
 
-			void PackInteger(unsigned long long offset, unsigned int value)  //Ricardo original unsigned int
+			void PackInteger(unsigned long long offset, unsigned long long value)  //Ricardo original unsigned long long
 			{
 #ifdef WORDS_BIGENDIAN
 				data[offset] = (value & 0xFF000000) >> 24;
@@ -46,7 +46,7 @@ namespace Heimdall
 #endif
 			}
 
-			void PackShort(unsigned long long offset, unsigned short value)  //Ricardo original unsigned int
+			void PackShort(unsigned long long offset, unsigned short value)  //Ricardo original unsigned long long
 			{
 #ifdef WORDS_BIGENDIAN
 				data[offset] = (value & 0xFF00) >> 8;
@@ -60,7 +60,7 @@ namespace Heimdall
 
 		public:
 
-			OutboundPacket(unsigned long long size) : Packet(size)  //Ricardo original unsigned int
+			OutboundPacket(unsigned long long size) : Packet(size)  //Ricardo original unsigned long long
 			{
 			}
 

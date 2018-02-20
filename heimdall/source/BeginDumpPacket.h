@@ -38,23 +38,23 @@ namespace Heimdall
 
 		private:
 
-			unsigned int chipType;
-			unsigned int chipId;
+			unsigned long long chipType;
+			unsigned long long chipId;
 
 		public:
 
-			BeginDumpPacket(unsigned int chipType, unsigned int chipId) : FileTransferPacket(FileTransferPacket::kRequestDump) 
+			BeginDumpPacket(unsigned long long chipType, unsigned long long chipId) : FileTransferPacket(FileTransferPacket::kRequestDump) 
 			{
 				this->chipType = chipType;
 				this->chipId = chipId;
 			}
 
-			unsigned int GetChipType(void) const
+			unsigned long long GetChipType(void) const
 			{
 				return (chipType);
 			}
 
-			unsigned int GetChipId(void) const
+			unsigned long long GetChipId(void) const
 			{
 				return (chipId);
 			}

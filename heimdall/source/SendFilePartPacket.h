@@ -34,22 +34,22 @@ namespace Heimdall
 	{
 		public:
 
-			SendFilePartPacket(FILE *file, unsigned long long size) : OutboundPacket(size) //Ricardo original unsigned int
+			SendFilePartPacket(FILE *file, unsigned long long size) : OutboundPacket(size) //Ricardo original unsigned long long
 			{
 				memset(data, 0, size);
 
-				unsigned long long position = (unsigned long long)FileTell(file); //Ricardo original unsigned int
+				unsigned long long position = (unsigned long long)FileTell(file); //Ricardo original unsigned long long
 
 				FileSeek(file, 0, SEEK_END);
-				unsigned long long fileSize = (unsigned long long)FileTell(file);//Ricardo original unsigned int
+				unsigned long long fileSize = (unsigned long long)FileTell(file);//Ricardo original unsigned long long
 				FileSeek(file, position, SEEK_SET);
 
 				// min(fileSize, size)
-				unsigned long long bytesToRead = (fileSize < size) ? fileSize - position : size; //Ricardo original unsigned int
+				unsigned long long bytesToRead = (fileSize < size) ? fileSize - position : size; //Ricardo original unsigned long long
 				(void)fread(data, 1, bytesToRead, file);
 			}
 
-			SendFilePartPacket(unsigned char *buffer, unsigned long long size) : OutboundPacket(size) //Ricardo original unsigned int
+			SendFilePartPacket(unsigned char *buffer, unsigned long long size) : OutboundPacket(size) //Ricardo original unsigned long long
 			{
 				memcpy(data, buffer, size);
 			}

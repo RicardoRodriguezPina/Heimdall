@@ -47,16 +47,16 @@ namespace Heimdall
 
 		private:
 
-			unsigned int request;
+			unsigned long long request;
 
 		public:
 
-			FileTransferPacket(unsigned int request) : ControlPacket(ControlPacket::kControlTypeFileTransfer)
+			FileTransferPacket(unsigned long long request) : ControlPacket(ControlPacket::kControlTypeFileTransfer)
 			{
 				this->request = request;
 			}
 
-			unsigned int GetRequest(void) const
+			unsigned long long GetRequest(void) const
 			{
 				return (request);
 			}

@@ -30,16 +30,16 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int partSize;
+			unsigned long long partSize;
 
 		public:
 
-			FlashPartPitFilePacket(unsigned int partSize) : PitFilePacket(PitFilePacket::kRequestPart)
+			FlashPartPitFilePacket(unsigned long long partSize) : PitFilePacket(PitFilePacket::kRequestPart)
 			{
 				this->partSize = partSize;
 			}
 
-			unsigned int GetPartSize(void) const
+			unsigned long long GetPartSize(void) const
 			{
 				return (partSize);
 			}

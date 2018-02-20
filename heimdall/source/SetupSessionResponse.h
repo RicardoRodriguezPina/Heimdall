@@ -30,7 +30,7 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int unknown;
+			unsigned long long unknown;
 
 		public:
 
@@ -38,7 +38,7 @@ namespace Heimdall
 			{
 			}
 
-			unsigned int GetUnknown(void) const
+			unsigned long long GetUnknown(void) const
 			{
 				return (unknown);
 			}

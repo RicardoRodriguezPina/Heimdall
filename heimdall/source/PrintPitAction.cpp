@@ -140,7 +140,7 @@ int PrintPitAction::Execute(int argc, char **argv)
 		// Print PIT from file; there's no need for a BridgeManager.
 
 		FileSeek(localPitFile, 0, SEEK_END);
-		unsigned int localPitFileSize = (unsigned int)FileTell(localPitFile);
+		unsigned long long localPitFileSize = (unsigned long long)FileTell(localPitFile);
 		FileRewind(localPitFile);
 
 		// Load the local pit file into memory.

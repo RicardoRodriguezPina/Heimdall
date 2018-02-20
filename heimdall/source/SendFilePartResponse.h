@@ -30,7 +30,7 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int partIndex;
+			unsigned long long partIndex;
 
 		public:
 
@@ -38,7 +38,7 @@ namespace Heimdall
 			{
 			}
 
-			unsigned int GetPartIndex(void) const
+			unsigned long long GetPartIndex(void) const
 			{
 				return (partIndex);
 			}

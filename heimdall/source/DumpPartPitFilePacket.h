@@ -30,16 +30,16 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int partIndex;
+			unsigned long long partIndex;
 
 		public:
 
-			DumpPartPitFilePacket(unsigned int partIndex) : PitFilePacket(PitFilePacket::kRequestPart)
+			DumpPartPitFilePacket(unsigned long long partIndex) : PitFilePacket(PitFilePacket::kRequestPart)
 			{
 				this->partIndex = partIndex;
 			}
 
-			unsigned int GetPartIndex(void) const
+			unsigned long long GetPartIndex(void) const
 			{
 				return (partIndex);
 			}

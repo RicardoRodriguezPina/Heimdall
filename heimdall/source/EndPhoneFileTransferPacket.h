@@ -52,20 +52,20 @@ namespace Heimdall
 
 		private:
 
-			unsigned int fileIdentifier;
-			unsigned int endOfFile;
+			unsigned long long fileIdentifier;
+			unsigned long long endOfFile;
 
 		public:
 
-			EndPhoneFileTransferPacket(unsigned long long sequenceByteCount, unsigned int unknown1, unsigned int chipIdentifier,
-				unsigned int fileIdentifier, bool endOfFile)
-				: EndFileTransferPacket(EndFileTransferPacket::kDestinationPhone, sequenceByteCount, unknown1, chipIdentifier) //Ricardo original unsigned int
+			EndPhoneFileTransferPacket(unsigned long long sequenceByteCount, unsigned long long unknown1, unsigned long long chipIdentifier,
+				unsigned long long fileIdentifier, bool endOfFile)
+				: EndFileTransferPacket(EndFileTransferPacket::kDestinationPhone, sequenceByteCount, unknown1, chipIdentifier) //Ricardo original unsigned long long
 			{
 				this->fileIdentifier = fileIdentifier;
 				this->endOfFile = (endOfFile) ? 1 : 0;
 			}
 
-			unsigned int GetFileIdentifier(void)
+			unsigned long long GetFileIdentifier(void)
 			{
 				return (fileIdentifier);
 			}

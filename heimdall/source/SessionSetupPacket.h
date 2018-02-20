@@ -42,7 +42,7 @@ namespace Heimdall
 
 		private:
 
-			unsigned int request;
+			unsigned long long request;
 
 		protected:
 
@@ -53,12 +53,12 @@ namespace Heimdall
 
 		public:
 
-			SessionSetupPacket(unsigned int request) : ControlPacket(ControlPacket::kControlTypeSession)
+			SessionSetupPacket(unsigned long long request) : ControlPacket(ControlPacket::kControlTypeSession)
 			{
 				this->request = request;
 			}
 
-			unsigned int GetRequest(void) const
+			unsigned long long GetRequest(void) const
 			{
 				return (request);
 			}

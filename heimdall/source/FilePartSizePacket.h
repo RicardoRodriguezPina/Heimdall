@@ -30,16 +30,16 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int filePartSize;
+			unsigned long long filePartSize;
 
 		public:
 
-			FilePartSizePacket(unsigned int filePartSize) : SessionSetupPacket(SessionSetupPacket::kFilePartSize)
+			FilePartSizePacket(unsigned long long filePartSize) : SessionSetupPacket(SessionSetupPacket::kFilePartSize)
 			{
 				this->filePartSize = filePartSize;
 			}
 
-			unsigned int GetFilePartSize(void) const
+			unsigned long long GetFilePartSize(void) const
 			{
 				return filePartSize;
 			}

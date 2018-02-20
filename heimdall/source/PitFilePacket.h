@@ -47,16 +47,16 @@ namespace Heimdall
 
 		private:
 
-			unsigned int request;
+			unsigned long long request;
 
 		public:
 
-			PitFilePacket(unsigned int request) : ControlPacket(ControlPacket::kControlTypePitFile)
+			PitFilePacket(unsigned long long request) : ControlPacket(ControlPacket::kControlTypePitFile)
 			{
 				this->request = request;
 			}
 
-			unsigned int GetRequest(void) const
+			unsigned long long GetRequest(void) const
 			{
 				return (request);
 			}

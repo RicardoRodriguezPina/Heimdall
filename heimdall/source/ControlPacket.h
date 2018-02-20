@@ -47,16 +47,16 @@ namespace Heimdall
 
 		private:
 
-			unsigned int controlType;
+			unsigned long long controlType;
 
 		public:
 
-			ControlPacket(unsigned int controlType) : OutboundPacket(1024)
+			ControlPacket(unsigned long long controlType) : OutboundPacket(1024)
 			{
 				this->controlType = controlType;
 			}
 
-			unsigned int GetControlType(void) const
+			unsigned long long GetControlType(void) const
 			{
 				return (controlType);
 			}

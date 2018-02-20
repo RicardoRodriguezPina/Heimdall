@@ -38,16 +38,16 @@ namespace Heimdall
 
 		private:
 
-			unsigned int request;
+			unsigned long long request;
 
 		public:
 
-			EndSessionPacket(unsigned int request) : ControlPacket(ControlPacket::kControlTypeEndSession)
+			EndSessionPacket(unsigned long long request) : ControlPacket(ControlPacket::kControlTypeEndSession)
 			{
 				this->request = request;
 			}
 
-			unsigned int GetRequest(void) const
+			unsigned long long GetRequest(void) const
 			{
 				return (request);
 			}

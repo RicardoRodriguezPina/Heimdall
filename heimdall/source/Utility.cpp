@@ -60,7 +60,7 @@ NumberParsingStatus Utility::ParseInt(int &intValue, const char *string, int bas
 	return (kNumberParsingStatusSuccess);
 }
 
-NumberParsingStatus Utility::ParseUnsignedInt(unsigned int &uintValue, const char *string, int base)
+NumberParsingStatus Utility::ParseUnsignedInt(unsigned long long &uintValue, const char *string, int base)
 {
     errno = 0;
 

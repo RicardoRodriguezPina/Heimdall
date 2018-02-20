@@ -30,16 +30,16 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int totalBytes;
+			unsigned long long totalBytes;
 
 		public:
 
-			TotalBytesPacket(unsigned long long totalBytes) : SessionSetupPacket(SessionSetupPacket::kTotalBytes)  //Ricardo original unsigned int
+			TotalBytesPacket(unsigned long long totalBytes) : SessionSetupPacket(SessionSetupPacket::kTotalBytes)  //Ricardo original unsigned long long
 			{
 				this->totalBytes = totalBytes;
 			}
 
-			unsigned int GetTotalBytes(void) const
+			unsigned long long GetTotalBytes(void) const
 			{
 				return (totalBytes);
 			}

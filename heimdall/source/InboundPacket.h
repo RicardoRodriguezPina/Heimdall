@@ -31,18 +31,18 @@ namespace Heimdall
 		private:
 
 			bool sizeVariable;
-			unsigned int receivedSize;
+			unsigned long long receivedSize;
 
 		protected:
 
-			unsigned int UnpackInteger(unsigned int offset) const
+			unsigned long long UnpackInteger(unsigned long long offset) const
 			{
 #ifdef WORDS_BIGENDIAN
-				unsigned int value = (data[offset] << 24) | (data[offset + 1] << 16) |
+				unsigned long long value = (data[offset] << 24) | (data[offset + 1] << 16) |
 					(data[offset + 2] << 8) | data[offset + 3];
 #else
 				// Flip endianness
-				unsigned int value = data[offset] | (data[offset + 1] << 8) |
+				unsigned long long value = data[offset] | (data[offset + 1] << 8) |
 					(data[offset + 2] << 16) | (data[offset + 3] << 24);
 #endif
 				return (value);
@@ -50,7 +50,7 @@ namespace Heimdall
 
 		public:
 
-			InboundPacket(unsigned int size, bool sizeVariable = false) : Packet(size)
+			InboundPacket(unsigned long long size, bool sizeVariable = false) : Packet(size)
 			{
 				this->sizeVariable = sizeVariable;
 			}
@@ -60,12 +60,12 @@ namespace Heimdall
 				return (sizeVariable);
 			}
 
-			unsigned int GetReceivedSize(void) const
+			unsigned long long GetReceivedSize(void) const
 			{
 				return (receivedSize);
 			}
 
-			void SetReceivedSize(unsigned int receivedSize)
+			void SetReceivedSize(unsigned long long receivedSize)
 			{
 				this->receivedSize = receivedSize;
 			}

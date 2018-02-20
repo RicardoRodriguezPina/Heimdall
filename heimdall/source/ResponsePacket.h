@@ -41,7 +41,7 @@ namespace Heimdall
 
 		private:
 
-			unsigned int responseType;
+			unsigned long long responseType;
 
 		protected:
 
@@ -57,14 +57,14 @@ namespace Heimdall
 				this->responseType = responseType;
 			}
 
-			unsigned int GetResponseType(void) const
+			unsigned long long GetResponseType(void) const
 			{
 				return (responseType);
 			}
 
 			virtual bool Unpack(void)
 			{
-				unsigned int receivedResponseType = UnpackInteger(0);
+				unsigned long long receivedResponseType = UnpackInteger(0);
 				if (receivedResponseType != responseType)
 				{
 					responseType = receivedResponseType;

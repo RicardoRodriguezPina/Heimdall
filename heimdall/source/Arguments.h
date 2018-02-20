@@ -108,9 +108,9 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int value;
+			unsigned long long value;
 
-			UnsignedIntegerArgument(const std::string& name, unsigned int value) : Argument(name, kArgumentTypeUnsignedInteger)
+			UnsignedIntegerArgument(const std::string& name, unsigned long long value) : Argument(name, kArgumentTypeUnsignedInteger)
 			{
 				this->value = value;
 			}
@@ -119,7 +119,7 @@ namespace Heimdall
 
 			static UnsignedIntegerArgument *ParseArgument(const std::string& name, int argc, char **argv, int& argi);
 
-			unsigned int GetValue(void) const
+			unsigned long long GetValue(void) const
 			{
 				return (value);
 			}

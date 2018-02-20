@@ -148,22 +148,21 @@ static void closeFiles(vector<PartitionFile>& partitionFiles, FILE *& pitFile)
 
 static bool sendTotalTransferSize(BridgeManager *bridgeManager, const vector<PartitionFile>& partitionFiles, FILE *pitFile, bool repartition)
 {
-	unsigned long long totalBytes = 0; //Ricardo original unsigned int
+	unsigned long long totalBytes = 0; //Ricardo original unsigned long long
 
 	for (vector<PartitionFile>::const_iterator it = partitionFiles.begin(); it != partitionFiles.end(); it++)
 	{
 		FileSeek(it->file, 0, SEEK_END);
 		unsigned long long tmpSize = (unsigned long long)FileTell(it->file);
-		totalBytes += tmpSize; //(unsigned long long)FileTell(it->file); //Ricardo original unsigned int
-		Interface::Print("File %s\n", it->argumentName);
-		Interface::Print("File %llu\n", tmpSize);
+		totalBytes += tmpSize; //(unsigned long long)FileTell(it->file); //Ricardo original unsigned long long
+		
 		FileRewind(it->file);
 	}
 
 	if (repartition)
 	{
 		FileSeek(pitFile, 0, SEEK_END);
-		totalBytes += (unsigned long long)FileTell(pitFile); //Ricardo original unsigned int
+		totalBytes += (unsigned long long)FileTell(pitFile); //Ricardo original unsigned long long
 		FileRewind(pitFile);
 	}
 
@@ -206,7 +205,7 @@ static bool setupPartitionFlashInfo(const vector<PartitionFile>& partitionFiles,
 		const PitEntry *pitEntry = nullptr;
 
 		// Was the argument a partition identifier?
-		unsigned int partitionIdentifier;
+		unsigned long long partitionIdentifier;
 
 		if (Utility::ParseUnsignedInt(partitionIdentifier, it->argumentName) == kNumberParsingStatusSuccess)
 		{
@@ -324,7 +323,7 @@ static PitData *getPitData(BridgeManager *bridgeManager, FILE *pitFile, bool rep
 		// Load the local pit file into memory.
 
 		FileSeek(pitFile, 0, SEEK_END);
-		unsigned int localPitFileSize = (unsigned int)FileTell(pitFile);
+		unsigned long long localPitFileSize = (unsigned long long)FileTell(pitFile);
 		FileRewind(pitFile);
 
 		unsigned char *pitFileBuffer = new unsigned char[localPitFileSize];
@@ -402,7 +401,7 @@ static bool enableTFlash(BridgeManager *bridgeManager)
 
 	SessionSetupResponse *enableTFlashResponse = new SessionSetupResponse();
 	success = bridgeManager->ReceivePacket(enableTFlashResponse, 5000);
-	unsigned int result = enableTFlashResponse->GetResult();
+	unsigned long long result = enableTFlashResponse->GetResult();
 	delete enableTFlashResponse;
 
 	if (!success)

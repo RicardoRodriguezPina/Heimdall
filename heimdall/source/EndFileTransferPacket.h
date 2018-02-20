@@ -45,14 +45,14 @@ namespace Heimdall
 
 		private:
 
-			unsigned int destination;			// PDA / Modem
-			unsigned int sequenceByteCount;
-			unsigned int unknown1; // EFS?
-			unsigned int deviceType;
+			unsigned long long destination;			// PDA / Modem
+			unsigned long long sequenceByteCount;
+			unsigned long long unknown1; // EFS?
+			unsigned long long deviceType;
 
 		protected:
 
-			EndFileTransferPacket(unsigned int destination, unsigned int sequenceByteCount, unsigned int unknown1, unsigned int deviceType)
+			EndFileTransferPacket(unsigned long long destination, unsigned long long sequenceByteCount, unsigned long long unknown1, unsigned long long deviceType)
 				: FileTransferPacket(FileTransferPacket::kRequestEnd)
 			{
 				this->destination = destination;
@@ -63,22 +63,22 @@ namespace Heimdall
 
 		public:
 
-			unsigned int GetDestination(void) const
+			unsigned long long GetDestination(void) const
 			{
 				return (destination);
 			}
 
-			unsigned int GetSequenceByteCount(void) const
+			unsigned long long GetSequenceByteCount(void) const
 			{
 				return (sequenceByteCount);
 			}
 
-			unsigned int GetUnknown1(void) const
+			unsigned long long GetUnknown1(void) const
 			{
 				return (unknown1);
 			}
 
-			unsigned int GetDeviceType(void) const
+			unsigned long long GetDeviceType(void) const
 			{
 				return (deviceType);
 			}

@@ -30,11 +30,11 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int endOfFile;
+			unsigned long long endOfFile;
 
 		public:
 
-			EndModemFileTransferPacket(unsigned int sequenceByteCount, unsigned int unknown1, unsigned int chipIdentifier, bool endOfFile)
+			EndModemFileTransferPacket(unsigned long long sequenceByteCount, unsigned long long unknown1, unsigned long long chipIdentifier, bool endOfFile)
 				: EndFileTransferPacket(EndFileTransferPacket::kDestinationModem, sequenceByteCount, unknown1, chipIdentifier)
 			{
 				this->endOfFile = (endOfFile) ? 1 : 0;

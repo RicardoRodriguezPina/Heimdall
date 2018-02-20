@@ -39,24 +39,24 @@ namespace Heimdall
 
 		private:
 
-			unsigned int request;
-			unsigned int unknown3Parameter;
+			unsigned long long request;
+			unsigned long long unknown3Parameter;
 
 		public:
 
-			SetupSessionPacket(unsigned int request, unsigned int unknown3Parameter = 0)
+			SetupSessionPacket(unsigned long long request, unsigned long long unknown3Parameter = 0)
 				: ControlPacket(ControlPacket::kControlTypeSetupSession)
 			{
 				this->request = request;
 				this->unknown3Parameter = unknown3Parameter;
 			}
 
-			unsigned int GetRequest(void) const
+			unsigned long long GetRequest(void) const
 			{
 				return (request);
 			}
 
-			unsigned int GetUnknown3Parameter(void) const
+			unsigned long long GetUnknown3Parameter(void) const
 			{
 				return (unknown3Parameter);
 			}

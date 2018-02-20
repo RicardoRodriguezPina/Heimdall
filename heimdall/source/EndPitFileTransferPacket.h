@@ -30,16 +30,16 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int fileSize;
+			unsigned long long fileSize;
 
 		public:
 
-			EndPitFileTransferPacket(unsigned int fileSize) : PitFilePacket(PitFilePacket::kRequestEndTransfer)
+			EndPitFileTransferPacket(unsigned long long fileSize) : PitFilePacket(PitFilePacket::kRequestEndTransfer)
 			{
 				this->fileSize = fileSize;
 			}
 
-			unsigned int GetFileSize(void) const
+			unsigned long long GetFileSize(void) const
 			{
 				return (fileSize);
 			}

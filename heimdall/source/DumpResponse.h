@@ -30,7 +30,7 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int dumpSize;
+			unsigned long long dumpSize;
 
 		public:
 
@@ -38,7 +38,7 @@ namespace Heimdall
 			{
 			}
 
-			unsigned int GetDumpSize(void) const
+			unsigned long long GetDumpSize(void) const
 			{
 				return (dumpSize);
 			}

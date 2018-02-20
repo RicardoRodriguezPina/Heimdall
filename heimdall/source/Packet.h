@@ -30,7 +30,7 @@ namespace Heimdall
 	{
 		private:
 
-			unsigned int size;
+			unsigned long long size;
 
 		protected:
 
@@ -38,7 +38,7 @@ namespace Heimdall
 
 		public:
 
-			Packet(unsigned int size)
+			Packet(unsigned long long size)
 			{
 				this->size = size;
 				data = new unsigned char[size];
@@ -50,7 +50,7 @@ namespace Heimdall
 				delete [] data;
 			}
 
-			unsigned int GetSize(void) const
+			unsigned long long GetSize(void) const
 			{
 				return (size);
 			}

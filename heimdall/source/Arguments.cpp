@@ -55,7 +55,7 @@ UnsignedIntegerArgument *UnsignedIntegerArgument::ParseArgument(const std::strin
 
 	if (++argi < argc)
 	{
-		unsigned int value;
+		unsigned long long value;
 		
 		if (Utility::ParseUnsignedInt(value, argv[argi]) == kNumberParsingStatusSuccess)
 			unsignedIntegerArgument = new UnsignedIntegerArgument(name, value);
@@ -140,11 +140,11 @@ bool Arguments::ParseArguments(int argc, char **argv, int argi)
 
 		// Handle wilcards
 		
-		unsigned int unsignedIntName;
+		unsigned long long unsignedIntName;
 		
 		if (argumentTypeIt == argumentTypes.end())
 		{
-			// Look for the unsigned integer wildcard "%d".
+			// Look for the unsigned long longeger wildcard "%d".
 			if (Utility::ParseUnsignedInt(unsignedIntName, argumentName.c_str()) == kNumberParsingStatusSuccess)
 			{
 				argumentTypeIt = argumentTypes.find("%d");

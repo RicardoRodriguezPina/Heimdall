@@ -218,7 +218,7 @@ void Interface::PrintPit(const PitData *pitData)
 	Interface::Print("Unknown 7: %d\n", pitData->GetUnknown7());
 	Interface::Print("Unknown 8: %d\n", pitData->GetUnknown8());
 
-	for (unsigned int i = 0; i < pitData->GetEntryCount(); i++)
+	for (unsigned long long i = 0; i < pitData->GetEntryCount(); i++)
 	{
 		const PitEntry *entry = pitData->GetEntry(i);
 

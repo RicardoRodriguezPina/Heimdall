@@ -127,9 +127,9 @@ namespace Heimdall
 
 #endif
 			bool isOldPhone;
-			unsigned int fileTransferSequenceMaxLength;
-			unsigned int fileTransferPacketSize;
-			unsigned int fileTransferSequenceTimeout;
+			unsigned long long fileTransferSequenceMaxLength;
+			unsigned long long fileTransferPacketSize;
+			unsigned long long fileTransferSequenceTimeout;
 
 			UsbLogLevel usbLogLevel;
 
@@ -159,13 +159,13 @@ namespace Heimdall
 			bool SendPacket(OutboundPacket *packet, int timeout = kDefaultTimeoutSend, int emptyTransferFlags = kEmptyTransferAfter) const;
 			bool ReceivePacket(InboundPacket *packet, int timeout = kDefaultTimeoutReceive, int emptyTransferFlags = kEmptyTransferNone) const;
 
-			bool RequestDeviceType(unsigned int request, int *result) const;
+			bool RequestDeviceType(unsigned long long request, int *result) const;
 
 			bool SendPitData(const libpit::PitData *pitData) const;
 			int ReceivePitFile(unsigned char **pitBuffer) const;
 			int DownloadPitFile(unsigned char **pitBuffer) const; // Thin wrapper around ReceivePitFile() with additional logging.
 
-			bool SendFile(FILE *file, unsigned int destination, unsigned int deviceType, unsigned int fileIdentifier = 0xFFFFFFFF) const;
+			bool SendFile(FILE *file, unsigned long long destination, unsigned long long deviceType, unsigned long long fileIdentifier = 0xFFFFFFFF) const;
 
 			void SetUsbLogLevel(UsbLogLevel usbLogLevel);
 
