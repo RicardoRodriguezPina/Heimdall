@@ -50,6 +50,8 @@ Arguments:\n\
     [--resume] [--stdout-errors] [--usb-log-level <none/error/warning/debug>]\n\
     [--tflash]\n\
     [--usb-path <USB Path>]\n\
+	[--s6Phone] \n\
+	[--s8Phone] \n\
 Description: Flashes one or more firmware files to your phone. Partition names\n\
     (or identifiers) can be obtained by executing the print-pit action.\n\
     T-Flash mode allows to flash the inserted SD-card instead of the internal MMC.\n\
@@ -434,11 +436,12 @@ int FlashAction::Execute(int argc, char **argv)
 	argumentTypes["stdout-errors"] = kArgumentTypeFlag;
 	argumentTypes["usb-log-level"] = kArgumentTypeString;
 	argumentTypes["tflash"] = kArgumentTypeFlag;
-  argumentTypes["oldfam"] = kArgumentTypeFlag;
+    argumentTypes["s6Phone"] = kArgumentTypeFlag;
+	argumentTypes["s8Phone"] = kArgumentTypeFlag;
 
 	argumentTypes["pit"] = kArgumentTypeString;
 	shortArgumentAliases["pit"] = "pit";
-  argumentTypes["usb-path"] = kArgumentTypeString;
+    argumentTypes["usb-path"] = kArgumentTypeString;
 
 	// Add wild-cards "%d" and "%s", for partition identifiers and partition names respectively.
 	argumentTypes["%d"] = kArgumentTypeString;
@@ -464,7 +467,8 @@ int FlashAction::Execute(int argc, char **argv)
 	bool resume = arguments.GetArgument("resume") != nullptr;
 	bool verbose = arguments.GetArgument("verbose") != nullptr;
 	bool tflash = arguments.GetArgument("tflash") != nullptr;
-  bool oldfam = arguments.GetArgument("oldfam") != nullptr;
+    bool s6Phone = arguments.GetArgument("s6Phone") != nullptr;
+	bool s8Phone = arguments.GetArgument("s8Phone") != nullptr;
 
 	if (arguments.GetArgument("stdout-errors") != nullptr)
 		Interface::SetStdoutErrors(true);
@@ -541,7 +545,8 @@ int FlashAction::Execute(int argc, char **argv)
 	// Perform flash
 
 	BridgeManager *bridgeManager = new BridgeManager(verbose);
-  bridgeManager->SetOldProto(oldfam);
+ 	bridgeManager->SetS6Phone(s6Phone);
+	bridgeManager->SetS8Phone(s8Phone);
 	bridgeManager->SetUsbLogLevel(usbLogLevel);
   if(usbPath){
     bridgeManager->SetUsbPath(usbPath->GetValue().c_str());

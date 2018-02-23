@@ -32,6 +32,8 @@ const char *ClosePcScreenAction::usage = "Action: close-pc-screen\n\
 Arguments: [--verbose] [--no-reboot] [--resume] [--stdout-errors]\n\
            [--usb-log-level <none/error/warning/debug>]\n\
            [--usb-path <USB Path>]\n\
+					 [--s6Phone] \n\
+					 [--s8Phone] \n\
 Description: Attempts to get rid off the \"connect phone to PC\" screen.\n\
 Note: --no-reboot causes the device to remain in download mode after the action\n\
       is completed. If you wish to perform another action whilst remaining in\n\
@@ -45,7 +47,8 @@ int ClosePcScreenAction::Execute(int argc, char **argv)
 	argumentTypes["no-reboot"] = kArgumentTypeFlag;
 	argumentTypes["resume"] = kArgumentTypeFlag;
 	argumentTypes["verbose"] = kArgumentTypeFlag;
-  argumentTypes["oldfam"] = kArgumentTypeFlag;
+  argumentTypes["s6Phone"] = kArgumentTypeFlag;
+	argumentTypes["s8Phone"] = kArgumentTypeFlag;
 	argumentTypes["stdout-errors"] = kArgumentTypeFlag;
 	argumentTypes["usb-log-level"] = kArgumentTypeString;
   argumentTypes["usb-path"] = kArgumentTypeString;
@@ -95,7 +98,8 @@ int ClosePcScreenAction::Execute(int argc, char **argv)
 	bool reboot = arguments.GetArgument("no-reboot") == nullptr;
 	bool resume = arguments.GetArgument("resume") != nullptr;
 	bool verbose = arguments.GetArgument("verbose") != nullptr;
-  bool oldfam = arguments.GetArgument("oldfam") != nullptr;
+  bool s6Phone = arguments.GetArgument("s6Phone") != nullptr;
+	bool s8Phone = arguments.GetArgument("s8Phone") != nullptr;
 	if (arguments.GetArgument("stdout-errors") != nullptr)
 		Interface::SetStdoutErrors(true);
 
@@ -107,7 +111,8 @@ int ClosePcScreenAction::Execute(int argc, char **argv)
 	// Download PIT file from device.
 
 	BridgeManager *bridgeManager = new BridgeManager(verbose);
-  bridgeManager->SetOldProto(oldfam);
+  bridgeManager->SetS6Phone(s6Phone);
+	bridgeManager->SetS8Phone(s8Phone);
 	bridgeManager->SetUsbLogLevel(usbLogLevel);
   if(usbPath){
     bridgeManager->SetUsbPath(usbPath->GetValue().c_str());

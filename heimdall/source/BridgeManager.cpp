@@ -284,17 +284,22 @@ bool BridgeManager::ClaimDeviceInterface(void)
 bool BridgeManager::SetupDeviceInterface(void)
 {
 	Interface::Print("Setting up interface...\n");
-
-	int result = libusb_set_interface_alt_setting(deviceHandle, interfaceIndex, altSettingIndex);
-
-	if (result != LIBUSB_SUCCESS)
+	if(isS8Phone)
 	{
-		Interface::PrintError("Setting up interface failed!\n");
-		return (false);
-	}
+		Interface::Print("\n");
+		return (true);
+	}else{
+		int result = libusb_set_interface_alt_setting(deviceHandle, interfaceIndex, altSettingIndex);
 
-	Interface::Print("\n");
-	return (true);
+		if (result != LIBUSB_SUCCESS)
+		{
+			Interface::PrintError("Setting up interface failed!\n");
+			return (false);
+		}
+
+		Interface::Print("\n");
+		return (true);
+	}
 }
 
 void BridgeManager::ReleaseDeviceInterface(void)
@@ -377,7 +382,8 @@ BridgeManager::BridgeManager(bool verbose)
 	outEndpoint = -1;
 	interfaceIndex = -1;
 	altSettingIndex = -1;
-	isOldPhone = false;
+	isS6Phone = false;
+	isS8Phone = false;
 
 	interfaceClaimed = false;
 
@@ -549,7 +555,7 @@ bool BridgeManager::BeginSession(void)
 {
 	Interface::Print("Beginning session...\n");
 
-	if(isOldPhone){
+	if(isS6Phone){
 		BeginSessionPacket beginSessionPacket;
 
 		if (!SendPacket(&beginSessionPacket))
@@ -573,7 +579,7 @@ bool BridgeManager::BeginSession(void)
 	* Ricardo Rodriguez: Here we need to review on newest versions why fail but don't affect system...
 	*
 	*/
-	// if (!ReceivePacket(&beginSessionResponse))
+	//if (!ReceivePacket(&beginSessionResponse))
 	// 	return (false);
 
 	unsigned long long deviceDefaultPacketSize = beginSessionResponse.GetResult();
@@ -657,7 +663,7 @@ bool BridgeManager::EndSession(bool reboot) const
 		success = ReceivePacket(rebootDeviceResponse);
 		delete rebootDeviceResponse;
 
-		if (!success)
+		if (!success && !isS8Phone)
 		{
 			Interface::PrintError("Failed to receive reboot confirmation!\n");
 
@@ -1312,10 +1318,16 @@ void BridgeManager::SetUsbPath(const char * usbpath)
 * Ricardo Rodriguez: BridgeManager needs to activate old value for protocol in old Galaxy fam
 *
 */
-void BridgeManager::SetOldProto(bool setme)
+void BridgeManager::SetS6Phone(bool setme)
 {
-	this->isOldPhone = setme;
+	this->isS6Phone = setme;
 }
+
+void BridgeManager::SetS8Phone(bool setme)
+{
+	this->isS8Phone = setme;
+}
+
 
 void BridgeManager::SetUsbLogLevel(UsbLogLevel usbLogLevel)
 {
