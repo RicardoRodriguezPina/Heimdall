@@ -553,9 +553,10 @@ int BridgeManager::Initialise(bool resume)
 
 bool BridgeManager::BeginSession(void)
 {
-	Interface::Print("Beginning session...\n");
+	
 
 	if(isS6Phone){
+		Interface::Print("Beginning session old devices...\n");
 		BeginSessionPacket beginSessionPacket;
 
 		if (!SendPacket(&beginSessionPacket))
@@ -564,6 +565,7 @@ bool BridgeManager::BeginSession(void)
 			return (false);
 		}
 	}else{
+		Interface::Print("Beginning session new devices...\n");
 		BeginSessionPacketNew beginSessionPacketNew;
 
 		if (!SendPacket(&beginSessionPacketNew))
@@ -1067,7 +1069,6 @@ int BridgeManager::DownloadPitFile(unsigned char **pitBuffer) const
 
 bool BridgeManager::SendFile(FILE *file, unsigned long long destination, unsigned long long deviceType, unsigned long long fileIdentifier) const
 {
-	Interface::Print("Start File sending");
 	if (destination != EndFileTransferPacket::kDestinationModem && destination != EndFileTransferPacket::kDestinationPhone)
 	{
 		Interface::PrintError("Attempted to send file to unknown destination!\n");
@@ -1092,6 +1093,7 @@ bool BridgeManager::SendFile(FILE *file, unsigned long long destination, unsigne
 
 	FileSeek(file, 0, SEEK_END);
 	unsigned long long fileSize = (unsigned long long)FileTell(file); //Ricardo original unsigned long long
+	Interface::Print("To sent: %llu\n", fileSize);
 	FileRewind(file);
 
 	ResponsePacket *fileTransferResponse = new ResponsePacket(ResponsePacket::kResponseTypeFileTransfer);

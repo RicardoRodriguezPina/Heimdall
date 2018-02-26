@@ -8,11 +8,7 @@ project(Heimdall)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(USE_64_SUFFIX ON)
-option(DISABLE_FRONTEND "Disable GUI frontend" OFF)
 
 add_subdirectory(libpit)
 add_subdirectory(heimdall)
-if(NOT DISABLE_FRONTEND)
-    add_subdirectory(heimdall-frontend)
-    add_dependencies(heimdall-frontend heimdall)
-endif()
+
